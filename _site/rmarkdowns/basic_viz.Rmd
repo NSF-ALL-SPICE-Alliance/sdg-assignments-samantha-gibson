@@ -131,6 +131,19 @@ Cool! It seems that the darkest blue points (countries with the lowest SDG 5 sco
 #### <span style="color: red;">Challenge 1</span>
 Create a scatterplot using two different SDG scores. Then, color the points by using a third SDG score. In a couple of sentences, describe what you see.
 
+```{r}
+ggplot(data = sdr_data, aes(x= goal_17_score, y = goal_16_score)) +
+  geom_point()
+```
+
+```{r}
+ggplot(data = sdr_data, aes(x= goal_17_score, y = goal_16_score, colour = goal_10_score)) +
+  geom_point()
+```
+
+Interpretation:
+Within this chart the countries with the lowest goal 10 scores in dark blue tend to align in the mid ranges for the goal 16&17 scores. The highest scoring goal 10 country in light blue also scored high within goal 17&16. Although the lowest scoring country for goal 10 in dark blue tends to range on the lower side for goal 16&17, the lowest scoring for goal 17 scored in the mid-ranges for goal 10. Not all of the countries follow a specific trend but there are occasional similar relationships.
+
 ### Bar Chart
 
 When should we use a **bar chart**?
@@ -190,6 +203,20 @@ As we can see in the Oceania region, most Countries do not have the necessary da
 #### <span style="color: red;">Challenge 2</span>
 Create a new bar chart with countries only from the MENA region. 
 
+```{r}
+ggplot(sdr_data, aes(x= goal_11_score, y = country)) + 
+  geom_bar (stat = "identity")
+
+```
+```{r}
+lac_sdr_data <- sdr_data %>%
+  filter(regions_used_for_the_sdr == "MENA")
+
+ggplot(lac_sdr_data, aes(x= goal_11_score, y = country)) +
+  geom_bar(stat = "identity")
+```
+
+
 ### Histogram
 
 When do we use a **histogram**?
@@ -224,3 +251,14 @@ Countries that fall in the higher end of the Goal 4 spectrum belong to the OECD 
 
 #### <span style="color: red;">Challenge 3</span>
 Make a histogram for a different SDG score. Then, fill by region. In a couple of sentences, describe any interesting trends or what you notice from your new histogram.
+
+```{r}
+ggplot(sdr_data, aes(x = goal_11_score)) +
+  geom_histogram()
+```
+```{r}
+ggplot(sdr_data, aes(x = goal_11_score, fill=regions_used_for_the_sdr)) +
+  geom_histogram(bins=33, color="blue")
+```
+Interpretation:
+The OECD regions had a majority of their countries scores on the higher scored range for goal 11. All of the regions score over 50. The lowest scoring region is Sub-Saharan Africa, but it does have some that do score on the higher range. The variation of the scores for Sub-Saharan Africa have the most diverse variations of scores with some scoring below 25 and others scoring above 50.
