@@ -112,6 +112,8 @@ Create a my_name variable with your name assigned to the variable instead of "Vi
 my_name <- "Samantha Gibson"
 ```
 
+
+
 ```{r}
 my_age = 22
 my_age + 5
@@ -297,6 +299,10 @@ Select is a function used to subset or select columns in your R data frame. Let'
 sdr_data %>% 
   select(goal_3_score, goal_4_score)
 ```
+```{r}
+sdr_data %>%
+  select(goal_10_score, goal_11_score)
+```
 
 You'll notice we used the pipe operator ` %>% ` after the name of the dataframe, and then listed the columns we were interested in the select() function
 
@@ -314,6 +320,11 @@ In order to do this, we write out the column name "regions_used_for_the_sdr" fol
 ```{r}
 sdr_data %>% 
   filter(regions_used_for_the_sdr == "Oceania")
+```
+
+```{r}
+sdr_data %>%
+  filter(regions_used_for_the_sdr == "MENA")
 ```
 
 Notes: 
