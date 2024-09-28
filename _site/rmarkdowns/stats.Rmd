@@ -197,14 +197,44 @@ To circle back and reinforce how the linear regression (line drawn through our s
   - What does this look like on scatter plot?
   
 ```{r, warning=FALSE, message=FALSE}
-ggplot(sdr_data, aes(x = goal_12_score, 
-                     y = goal_9_score)) +
+library(plotly)
+plot_goal_correlation <- ggplot(sdr_data, aes(x = goal_14_score, 
+                     y = goal_15_score), text = "country") +
   geom_point() +
   geom_smooth() +
   stat_cor() +
+  labs(title = "Correlation of Goal 14 and Goal 15", 
+       x = "Goal 14 Score",
+       y = "Goal 15 Score") +
   theme_minimal() 
+ggplotly(plot_goal_correlation)
+```
+```{r}
+library(ggplot2)
+library(plotly)
+library(ggpubr) 
+
+plot_goal_correlation <- ggplot(sdr_data, aes(x = goal_14_score, 
+                                              y = goal_15_score, 
+                                              text = country)) +  
+  geom_point() +  
+  geom_smooth(method = "lm", se = TRUE) +  
+  stat_cor() +  
+  labs(title = "Correlation of Goal 14 and Goal 15", 
+       x = "Goal 14 Score",
+       y = "Goal 15 Score") +
+  theme_minimal()
+
+
+interactive_plot <- ggplotly(plot_goal_correlation, tooltip = "text")
+
+
+interactive_plot
 
 ```
+### Interpretation of graph
+
+My graph evaluated the correlation between goal 14 scores and goal 15 scores in different countries. Goal 14 is Life Below water and goal 15 is Life on Land. These SDGs are associated with the health of wildlife and their environments. The graph shows a weak positive correlation between countries that score similarly in goal 14 and goal 15. Singapore scored lower for both goal 14 and 15 and Estonia scored high for goal 14 and 15. A few countries that scored in the middle for goal 15 and 14 were Canada, Thailand, Uruguay, and Brazil.
 
 ### <span style="color: red;">Challenge 1</span>
 
@@ -219,4 +249,5 @@ ggplot(sdr_data, aes(x = goal_12_score,
       
       - are there any points that don't follow the trend (outliers)
         
-        - which country(s) are outliers?
+        - which country(s) are outliers
+        
