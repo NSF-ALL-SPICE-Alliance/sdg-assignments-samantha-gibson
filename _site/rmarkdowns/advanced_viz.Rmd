@@ -63,7 +63,6 @@ ggplot(sdr_data, aes(x = goal_4_score, fill=regions_used_for_the_sdr)) +
   geom_histogram()
 ```
 
-
 Looks Nice, but let's improve it!
   
   - add a theme with theme_minimal()
@@ -76,14 +75,13 @@ We start with the same exact code and add to it with `+`
 ggplot(sdr_data, aes(x = goal_4_score, fill=regions_used_for_the_sdr)) +
   geom_histogram() +
   theme_minimal() +
-  scale_fill_viridis_d() +
+  scale_fill_viridis_d(option = "magma") +
   labs(title = "Distributions of SDG 4 Scores",
        x = "SDG 4 Score",
        y = "Number of Countries",
        fill = "Region")
   
 ```
-
 
 
 Awesome, looking much better!
@@ -108,7 +106,7 @@ Interactive visualizations are a really exciting part of data science! Interacti
 goal_4_histogram <- ggplot(sdr_data, aes(x = goal_4_score, fill=regions_used_for_the_sdr)) +
   geom_histogram() +
   theme_minimal() +
-  scale_fill_viridis_d() +
+  scale_fill_viridis_d(option = "magma") +
   labs(title = "Distributions of SDG 4 Scores",
        x = "SDG 4 Score",
        y = "Number of Countries",
@@ -116,7 +114,6 @@ goal_4_histogram <- ggplot(sdr_data, aes(x = goal_4_score, fill=regions_used_for
 
 ggplotly(goal_4_histogram)
 ```
-
 
 
 Epic! Now we can hover over the histogram and get some info
@@ -130,8 +127,17 @@ We can also double-click the boxes in the legend to only view the regions we're 
 Here is the code for a scatter plot you made in the last lesson:
 
 ```{r, warning = FALSE}
-ggplot(data = sdr_data, aes(x= goal_3_score, y = goal_4_score, color = regions_used_for_the_sdr)) +
-  geom_point()
+goal_4_histogram <- ggplot(data = sdr_data, aes(x= goal_3_score, y = goal_4_score, color = regions_used_for_the_sdr)) +
+  geom_point() +
+  theme_minimal() +
+  scale_fill_viridis_d(option = "magma") +
+  labs(title = "Distributions of SDG 4 Scores",
+       x = "SDG 4 Score",
+       y = "Number of Countries",
+       fill = "Region")
+  
+
+ggplotly(goal_4_histogram)
 ```
 
 *Edit the code chunk above* that generates the plot to:
@@ -255,14 +261,14 @@ Awesome! We're ready to make a map
 ```{r}
 mytext <- paste(
     "Country: ", sdr_data_world_joined$country,"<br/>", 
-    "Goal 7 Score: ", round(sdr_data_world_joined$goal_7_score, 2), 
+    "Goal 11 Score: ", round(sdr_data_world_joined$goal_11_score, 2), 
     sep="") %>%
   lapply(htmltools::HTML)
 
 leaflet(sdr_data_world_joined) %>% 
   addTiles()  %>% 
   setView( lat=10, lng=0 , zoom=2) %>%
-  addPolygons(stroke = FALSE, fillOpacity = 0.5, smoothFactor = 0.5, color = ~colorQuantile("YlOrRd", goal_7_score)(goal_7_score), label = mytext)
+  addPolygons(stroke = FALSE, fillOpacity = 0.5, smoothFactor = 0.5, color = ~colorQuantile("PRGn", goal_11_score)(goal_11_score), label = mytext)
 ```
 #### <span style="color: red;">Challenge 2</span>
 
