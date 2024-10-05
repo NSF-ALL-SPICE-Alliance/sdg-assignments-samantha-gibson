@@ -331,6 +331,15 @@ plotPartial(pd)
 
 #### <span style="color: red;">Challenge 1</span>
 
+```{r} 
+k2 <- kmeans(sdr_data_imputed, centers = 5)
+
+```
+
+```{r}
+fviz_cluster(k2, data = sdr_data_imputed) + theme_minimal()
+```
+
 Edit this code chunk `k2 <- kmeans(sdr_data_imputed, centers = 2)` under the silhouette plot to increase the number of clusters
 
 - Then, run the code chunk `fviz_cluster(k2, data = sdr_data_imputed) + theme_minimal()` to see the new visualization with the increased number of clusters
@@ -340,6 +349,43 @@ Edit this code chunk `k2 <- kmeans(sdr_data_imputed, centers = 2)` under the sil
 Edit this code chunk `rf_matmort <- randomForest(normalized_score_sdg3_matmort ~ ., data = sdr_data_imputed, importance = TRUE)` to predict a different indicator score (any indicator other than normalized_score_sdg3_matmort)
 
 - Rename the random forest model from rf_matmort to something that more accurately represents the model (base the name on the indicator you are predicting)
+
+```{r}
+rf_obesity <- randomForest(normalized_score_sdg2_obesity ~ ., data = sdr_data_imputed, importance = TRUE)
+```
+
+```{r}
+rf_obesity
+```
+```{r}
+importance_df <- as.data.frame(rf_obesity$importance)
+```
+
+```{r}
+importance_df_top_10 <- importance_df %>%
+  rownames_to_column(var = "variable") %>%
+  slice_max(n = 10, order_by = `%IncMSE`)
+```
+
+```{r}
+ggplot(importance_df_top_10, aes(x = `%IncMSE`, y = reorder(variable, `%IncMSE`))) +
+  geom_bar(stat = "identity", fill = "steelblue", color = "black") +
+  theme_minimal() +
+  labs(title = "Most Important Variables in Predicting Obesity",
+       subtitle = "Top 10",
+       y = "SDG Indicator",
+       x = "Feature Importance (% Increase in Mean Squared Error)")
+
+```
+```{r}
+pdp::partial(rf_obesity, pred.var = "normalized_score_sdg6_sanita", plot = TRUE)
+```
+
+```{r}
+pd <- pdp::partial(rf_obesity, pred.var = c("normalized_score_sdg6_sanita", "normalized_score_sdg3_u5mort"))
+# Default PDP
+plotPartial(pd)
+```
 
   - Run the remainder of the code chunks below to see the different outputs
     
